@@ -26,12 +26,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.ivankobzarev.signalgiphy.MainActivity;
 import org.ivankobzarev.signalgiphy.R;
 import org.ivankobzarev.signalgiphy.api.Gif;
+import org.ivankobzarev.signalgiphy.repository.GifsRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 public class GifListFragment extends Fragment {
 
@@ -40,6 +46,7 @@ public class GifListFragment extends Fragment {
   private RecyclerView mRecyclerView;
   private GifListViewModel mViewModel;
   private GifsListAdapter mAdapter;
+
   private final Observer<List<Gif>> mAdapterGifsObserver = gifs -> {
     mAdapter.setItems(gifs);
   };
@@ -68,7 +75,11 @@ public class GifListFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mViewModel = new ViewModelProvider(getActivity(), new ViewModelFactory(getActivity().getApplication())).get(GifListViewModel.class);
+    mViewModel = new ViewModelProvider(
+        getActivity(),
+        // Remove this hack once solving problem of AndroidInjection.inject(this) for GifsListFragment
+        ((MainActivity)getActivity()).getViewModelFactory()
+    ).get(GifListViewModel.class);
     uiStateTrending();
   }
 

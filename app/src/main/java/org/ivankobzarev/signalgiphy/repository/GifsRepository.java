@@ -15,8 +15,12 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import retrofit2.Response;
 
+@Singleton
 public class GifsRepository {
 
   private static final String TAG = "gifs-repo";
@@ -31,6 +35,7 @@ public class GifsRepository {
   private final ConcurrentHashMap<String, CopyOnWriteArrayList<Gif>> mSearchGifsMap = new ConcurrentHashMap<>();
   private final ConcurrentHashMap<String, Integer> mSearchGifsNextOffsetToLoad = new ConcurrentHashMap<>();
 
+  @Inject
   public GifsRepository(GiphyApi mGiphyApi, AppExecutors appExecutors) {
     this.mGiphyApi = mGiphyApi;
     this.mAppExecutors = appExecutors;

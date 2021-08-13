@@ -1,39 +1,31 @@
 package org.ivankobzarev.signalgiphy;
 
+import android.app.Activity;
 import android.app.Application;
 
-import org.ivankobzarev.signalgiphy.api.GiphyApi;
-import org.ivankobzarev.signalgiphy.repository.GifsRepository;
+import org.ivankobzarev.signalgiphy.di.DaggerAppComponent;
 
-import java.util.concurrent.Executors;
+import javax.inject.Inject;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 
-public class App extends Application {
+public class App extends Application implements HasActivityInjector {
 
-  //TODO: move to dagger di
+  @Inject
+  DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
-  private GiphyApi mGiphyApi;
-  private GifsRepository mGifsRepository;
-  private AppExecutors mAppExecutors;
-
-  public GifsRepository getGifsRepository() {
-    return mGifsRepository;
+  @Override
+  public DispatchingAndroidInjector<Activity> activityInjector() {
+    return dispatchingAndroidInjector;
   }
 
   @Override
   public void onCreate() {
     super.onCreate();
-    mAppExecutors = new AppExecutors(Executors.newFixedThreadPool(3), new AppExecutors.MainThreadExecutor());
-
-    mGiphyApi = new Retrofit.Builder()
-        .baseUrl("http://api.giphy.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .callbackExecutor(mAppExecutors.mainThread)
+    DaggerAppComponent.builder()
+        .application(this)
         .build()
-        .create(GiphyApi.class);
-
-    mGifsRepository = new GifsRepository(mGiphyApi, mAppExecutors);
+        .inject(this);
   }
 }

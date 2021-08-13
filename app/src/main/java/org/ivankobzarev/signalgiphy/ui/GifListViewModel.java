@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class GifListViewModel extends ViewModel {
 
   private final GifsRepository mGifsRepository;
@@ -20,6 +22,7 @@ public class GifListViewModel extends ViewModel {
   private MutableLiveData<List<Gif>> mTrendingGifs;
   private boolean isTrendingLoading = false;
 
+  @Inject
   public GifListViewModel(GifsRepository gifsRepository) {
     this.mGifsRepository = gifsRepository;
   }

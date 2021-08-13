@@ -1,27 +1,29 @@
 package org.ivankobzarev.signalgiphy.ui;
 
-import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.ivankobzarev.signalgiphy.App;
-import org.ivankobzarev.signalgiphy.ui.GifListViewModel;
+import org.ivankobzarev.signalgiphy.repository.GifsRepository;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
-  private final App mApp;
+  private final GifsRepository mGifsRepository;
 
-  public ViewModelFactory(Application application) {
-    this.mApp = (App) application;
+  @Inject
+  public ViewModelFactory(GifsRepository gifsRepository) {
+    this.mGifsRepository = gifsRepository;
   }
 
   @NonNull
   @Override
   public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
     if (modelClass.isAssignableFrom(GifListViewModel.class)) {
-      return (T) new GifListViewModel(mApp.getGifsRepository());
+      return (T) new GifListViewModel(mGifsRepository);
     }
     throw new IllegalStateException("Unknown ViewModel class");
   }

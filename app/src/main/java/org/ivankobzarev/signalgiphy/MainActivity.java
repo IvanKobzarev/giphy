@@ -1,19 +1,34 @@
 package org.ivankobzarev.signalgiphy;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import org.ivankobzarev.signalgiphy.R;
 import org.ivankobzarev.signalgiphy.ui.GifListFragment;
+import org.ivankobzarev.signalgiphy.ui.ViewModelFactory;
 
-public class MainActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+
+public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+
+  @Inject
+  DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+  @Inject
+  ViewModelFactory mViewModelFactory;
+
+  @Override
+  public DispatchingAndroidInjector<Fragment> supportFragmentInjector() {
+    return dispatchingAndroidInjector;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    AndroidInjection.inject(this);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     if (savedInstanceState == null) {
@@ -22,5 +37,9 @@ public class MainActivity extends AppCompatActivity {
       getSupportFragmentManager().beginTransaction()
           .add(R.id.fragment_container, fragment, GifListFragment.TAG).commit();
     }
+  }
+
+  public ViewModelFactory getViewModelFactory() {
+    return mViewModelFactory;
   }
 }

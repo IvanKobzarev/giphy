@@ -28,11 +28,14 @@ android {
 
 dependencies {
     implementation deps.constraint_layout
+    implementation deps.lifecycle_extensions
+    implementation deps.lifecycle_viewmodel
     implementation deps.app_compat
     implementation deps.recyclerview
     implementation deps.material
     implementation deps.retrofit.runtime
     implementation deps.retrofit.gson
+
 
     implementation deps.navigation.runtime
     implementation deps.navigation.fragment
@@ -40,4 +43,9 @@ dependencies {
 
     implementation deps.glide.core
     annotationProcessor deps.glide.compiler
+
+    implementation deps.dagger.core
+    implementation deps.dagger.support
+    annotationProcessor deps.dagger.processor
+    annotationProcessor deps.dagger.compiler
 }
