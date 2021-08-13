@@ -1,0 +1,56 @@
+ext.deps = [:]
+def versions = [:]
+versions.appcompat = "1.2.0-alpha02"
+versions.material = "1.4.0"
+versions.retrofit = "2.9.0"
+versions.paging = "3.0.0-beta01"
+versions.recyclerview = "1.2.0-beta01"
+versions.constraint_layout = "2.0.0-alpha2"
+versions.navigation = "2.3.0-alpha01"
+versions.glide = "4.12.0"
+ext.versions = versions
+
+
+def build_versions = [:]
+build_versions.min_sdk = 14
+build_versions.compile_sdk = 29
+build_versions.target_sdk = 29
+build_versions.build_tools = "29.0.3"
+ext.build_versions = build_versions
+
+
+def deps = [:]
+deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
+deps.annotations = "androidx.annotation:annotation:$versions.annotations"
+deps.app_compat = "androidx.appcompat:appcompat:$versions.appcompat"
+deps.constraint_layout = "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
+deps.paging_runtime = "androidx.paging:paging-runtime:$versions.paging"
+deps.recyclerview = "androidx.recyclerview:recyclerview:$versions.recyclerview"
+deps.material = "com.google.android.material:material:$versions.material"
+
+
+def retrofit = [:]
+retrofit.runtime = "com.squareup.retrofit2:retrofit:$versions.retrofit"
+retrofit.gson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+retrofit.mock = "com.squareup.retrofit2:retrofit-mock:$versions.retrofit"
+deps.retrofit = retrofit
+
+def navigation = [:]
+navigation.runtime = "androidx.navigation:navigation-runtime:$versions.navigation"
+navigation.fragment = "androidx.navigation:navigation-fragment:$versions.navigation"
+navigation.ui = "androidx.navigation:navigation-ui:$versions.navigation"
+deps.navigation = navigation
+
+def glide = [:]
+glide.core = "com.github.bumptech.glide:glide:$versions.glide"
+glide.compiler = "com.github.bumptech.glide:compiler:$versions.glide"
+deps.glide = glide
+
+ext.deps = deps
+
+def addRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.jcenter()
+    handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+ext.addRepos = this.&addRepos
